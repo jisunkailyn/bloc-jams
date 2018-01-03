@@ -30,6 +30,24 @@
      ]
  };
 
+ // Assignment Example Album
+ var albumJackson = {
+     title: 'Thriller',
+     artist: 'Michael Jackson',
+     label: 'Epic',
+     year: '1982',
+     albumArtUrl: 'assets/images/album_covers/Michael_Jackson_-_Thriller.png',
+     songs: [
+         { title: 'The Girl is Mine', duration: '1:01' },
+         { title: 'Billie Jean', duration: '5:01' },
+         { title: 'Beat It', duration: '3:21'},
+         { title: "Wanna Be Startin' Something", duration: '3:14' },
+         { title: 'Human Nature', duration: '2:15'},
+         { title: 'P.Y.T. (Pretty Young Thing)', duration: '4:18'},
+         { title: 'Thriller', duration: '5:23'}
+     ]
+ };
+
  var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
@@ -65,6 +83,21 @@
      }
  };
 
+var setAlbumToggle = function() {
+  var albumCover = document.getElementsByClassName('album-cover-art')[0];
+  var albums = [albumPicasso, albumMarconi, albumJackson];
+  var index = 0;
+  albumCover.addEventListener('click', function(event) {
+    if (index == albums.length - 1) {
+      index = 0;
+    } else {
+      index = index + 1;
+    }
+    setCurrentAlbum(albums[index]);
+  })
+}
+
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+     setAlbumToggle();
  };
