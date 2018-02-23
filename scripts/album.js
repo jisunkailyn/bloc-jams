@@ -98,6 +98,7 @@ var nextSong = function() {
   }
 
   setSong(currentSongIndex + 1);
+  currentSoundFile.play();
   updatePlayerBarSong();
 
   var $nextSongNumber = getSongNumberCell(currentlyPlayingSongNumber);
@@ -116,6 +117,7 @@ var previousSong = function() {
   }
 
   setSong(currentSongIndex + 1);
+  currentSoundFile.play();
   updatePlayerBarSong();
 
   var $prevSongNumber = getSongNumberCell(currentlyPlayingSongNumber);
@@ -129,15 +131,36 @@ var setSong = function(songNumber) {
   if (songNumber == null) {
     currentlyPlayingSongNumber = null;
     currentSongFromAlbum = null;
+    currentSoundFile = null;
   } else {
+    if (currentSoundFile) {
+      currentSoundFile.stop();
+    }
     currentlyPlayingSongNumber = songNumber;
     currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+
+    currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
+      // #2
+      formats: [ 'mp3' ],
+      preload: true
+    });
+
+    currentSoundFile.play();
+
+    setVolume(currentVolume);
   }
 };
 
+var setVolume = function(volume) {
+    if (currentSoundFile) {
+        currentSoundFile.setVolume(volume);
+    }
+};
+
+
 var getSongNumberCell = function(number) {
   return $('.song-item-number[data-song-number="' + number + '"]');
-}
+};
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
@@ -146,6 +169,7 @@ var playerBarPauseButton = '<span class="ion-pause"></span>';
 
 var currentAlbum = null;
 setSong(null);
+var currentVolume = 80;
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
